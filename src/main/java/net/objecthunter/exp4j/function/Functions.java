@@ -42,8 +42,9 @@ public class Functions {
     private static final int INDEX_LOG10 = 20;
     private static final int INDEX_LOG2 = 21;
     private static final int INDEX_SGN = 22;
+    private static final int INDEX_MAX = 23;
 
-    private static final Function[] builtinFunctions = new Function[23];
+    private static final Function[] builtinFunctions = new Function[24];
 
     static {
         builtinFunctions[INDEX_SIN] = new Function("sin") {
@@ -194,6 +195,12 @@ public class Functions {
                 }
             }
         };
+   	builtinFunctions[INDEX_MAX] = new Function("max", 2) {
+	    @Override
+	    public double apply(double... args) {
+                return Math.max(args[0], args[1]);
+    	    }		
+        };
     }
 
     /**
@@ -249,6 +256,8 @@ public class Functions {
             return builtinFunctions[INDEX_EXPM1];
         } else if (name.equals("signum")) {
             return builtinFunctions[INDEX_SGN];
+        } else if (name.equals("max")) {
+            return builtinFunctions[INDEX_MAX];
         } else {
             return null;
         }
