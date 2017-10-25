@@ -18,21 +18,9 @@ package net.objecthunter.exp4j;
 import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.function.Functions;
 import net.objecthunter.exp4j.operator.Operator;
-import net.objecthunter.exp4j.tokenizer.FunctionToken;
-import net.objecthunter.exp4j.tokenizer.NumberToken;
-import net.objecthunter.exp4j.tokenizer.OperatorToken;
-import net.objecthunter.exp4j.tokenizer.Token;
-import net.objecthunter.exp4j.tokenizer.VariableToken;
+import net.objecthunter.exp4j.tokenizer.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -53,17 +41,17 @@ public class Expression {
         vars.put("e", Math.E);
         return vars;
     }
-    
+
     /**
      * Creates a new expression that is a copy of the existing one.
-     * 
+     *
      * @param existing the expression to copy
      */
     public Expression(final Expression existing) {
-    	this.tokens = Arrays.copyOf(existing.tokens, existing.tokens.length);
-    	this.variables = new HashMap<String,Double>();
-    	this.variables.putAll(existing.variables);
-    	this.userFunctionNames = new HashSet<String>(existing.userFunctionNames);
+        this.tokens = Arrays.copyOf(existing.tokens, existing.tokens.length);
+        this.variables = new HashMap<String, Double>();
+        this.variables.putAll(existing.variables);
+        this.userFunctionNames = new HashSet<String>(existing.userFunctionNames);
     }
 
     Expression(final Token[] tokens) {
@@ -75,6 +63,18 @@ public class Expression {
     Expression(final Token[] tokens, Set<String> userFunctionNames) {
         this.tokens = tokens;
         this.variables = createDefaultVariables();
+        this.userFunctionNames = userFunctionNames;
+    }
+
+    Expression(final Token[] tokens, Map<String, Double> variables) {
+        this.tokens = tokens;
+        this.variables = variables;
+        this.userFunctionNames = Collections.<String>emptySet();
+    }
+
+    Expression(final Token[] tokens, Map<String, Double> variables, Set<String> userFunctionNames) {
+        this.tokens = tokens;
+        this.variables = variables;
         this.userFunctionNames = userFunctionNames;
     }
 
@@ -99,11 +99,15 @@ public class Expression {
 
     public Set<String> getVariableNames() {
         final Set<String> variables = new HashSet<String>();
-        for (final Token t: tokens) {
+        for (final Token t : tokens) {
             if (t.getType() == Token.TOKEN_VARIABLE)
-                variables.add(((VariableToken)t).getName());
+                variables.add(((VariableToken) t).getName());
         }
         return variables;
+    }
+
+    public Token[] getTokens() {
+        return tokens;
     }
 
     public ValidationResult validate(boolean checkVariablesSet) {
@@ -135,7 +139,7 @@ public class Expression {
                     break;
                 case Token.TOKEN_FUNCTION:
                     final Function func = ((FunctionToken) tok).getFunction();
-                    final int argsNum = func.getNumArguments(); 
+                    final int argsNum = func.getNumArguments();
                     if (argsNum > count) {
                         errors.add("Not enough arguments for '" + func.getName() + "'");
                     }
@@ -178,8 +182,27 @@ public class Expression {
         });
     }
 
+    public boolean isAssignExpression() {
+        // tokens: a 5 =
+        //     =
+        //   /   \
+        //  a     5
+        return tokens[0].getType() == Token.TOKEN_VARIABLE
+                && tokens[tokens.length - 1].getType() == Token.TOKEN_OPERATOR
+                && "=".equals(((OperatorToken) tokens[tokens.length - 1]).getOperator().getSymbol());
+    }
+
     public double evaluate() {
         final ArrayStack output = new ArrayStack();
+
+        if (isAssignExpression()) {
+            Token[] newToken = new Token[tokens.length - 2];
+            for (int i = 1; i < tokens.length - 1; i++) {
+                newToken[i - 1] = tokens[i];
+            }
+            return new Expression(newToken, this.variables).evaluate();
+        }
+
         for (int i = 0; i < tokens.length; i++) {
             Token t = tokens[i];
             if (t.getType() == Token.TOKEN_NUMBER) {

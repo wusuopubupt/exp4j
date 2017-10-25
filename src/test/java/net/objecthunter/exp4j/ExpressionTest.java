@@ -15,20 +15,17 @@
 */
 package net.objecthunter.exp4j;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import net.objecthunter.exp4j.function.Functions;
 import net.objecthunter.exp4j.operator.Operator;
 import net.objecthunter.exp4j.operator.Operators;
 import net.objecthunter.exp4j.tokenizer.*;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import static org.junit.Assert.*;
 
 
 public class ExpressionTest {
@@ -51,6 +48,17 @@ public class ExpressionTest {
         };
         Expression exp = new Expression(tokens);
         assertEquals(0d, exp.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionAssign() throws Exception{
+        Token[] tokens = new Token[] {
+                new VariableToken("a"),
+                new NumberToken(5),
+                new OperatorToken(Operators.getBuiltinOperator('=', 2)),
+        };
+        Expression exp = new Expression(tokens);
+        assertEquals(5d, exp.evaluate(), 0d);
     }
 
     @Test

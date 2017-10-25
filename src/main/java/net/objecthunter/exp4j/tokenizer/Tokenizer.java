@@ -15,13 +15,13 @@
  */
 package net.objecthunter.exp4j.tokenizer;
 
-import java.util.Map;
-import java.util.Set;
-
 import net.objecthunter.exp4j.function.Function;
 import net.objecthunter.exp4j.function.Functions;
 import net.objecthunter.exp4j.operator.Operator;
 import net.objecthunter.exp4j.operator.Operators;
+
+import java.util.Map;
+import java.util.Set;
 
 public class Tokenizer {
 
@@ -113,8 +113,8 @@ public class Tokenizer {
                 lastToken = new OperatorToken(Operators.getBuiltinOperator('*', 2));
                 return lastToken;
             }
-            return parseFunctionOrVariable();
 
+            return parseFunctionOrVariableOrAssignment();
         }
         throw new IllegalArgumentException("Unable to parse char '" + ch + "' (Code:" + (int) ch + ") at [" + pos + "]");
     }
@@ -147,7 +147,7 @@ public class Tokenizer {
         return ch == ')' || ch == '}' || ch == ']';
     }
 
-    private Token parseFunctionOrVariable() {
+    private Token parseFunctionOrVariableOrAssignment() {
         final int offset = this.pos;
         int testPos;
         int lastValidLen = 1;
@@ -157,9 +157,10 @@ public class Tokenizer {
             this.pos++;
         }
         testPos = offset + len - 1;
+        String name = "";
         while (!isEndOfExpression(testPos) &&
                 isVariableOrFunctionCharacter(expression[testPos])) {
-            String name = new String(expression, offset, len);
+            name = new String(expression, offset, len);
             if (variableNames != null && variableNames.contains(name)) {
                 lastValidLen = len;
                 lastValidToken = new VariableToken(name);
@@ -173,6 +174,17 @@ public class Tokenizer {
             len++;
             testPos = offset + len - 1;
         }
+
+        // skip white space
+        while (!isEndOfExpression(pos + lastValidLen) && Character.isWhitespace(expression[pos + lastValidLen])) {
+            lastValidLen++;
+        }
+        // is assignment
+        if(!isEndOfExpression(pos + lastValidLen) && '=' == expression[pos + lastValidLen]) {
+            lastValidToken = new VariableToken(name);
+            variableNames.add(name);
+        }
+
         if (lastValidToken == null) {
             throw new UnknownFunctionOrVariableException(new String(expression), pos, len);
         }

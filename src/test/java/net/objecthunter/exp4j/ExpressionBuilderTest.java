@@ -16,8 +16,9 @@
 
 package net.objecthunter.exp4j;
 
-import static java.lang.Math.*;
-import static org.junit.Assert.*;
+import net.objecthunter.exp4j.function.Function;
+import net.objecthunter.exp4j.operator.Operator;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import net.objecthunter.exp4j.function.Function;
-import net.objecthunter.exp4j.operator.Operator;
-
-import org.junit.Test;
+import static java.lang.Math.*;
+import static org.junit.Assert.*;
 
 public class ExpressionBuilderTest {
 
@@ -1981,6 +1980,26 @@ public class ExpressionBuilderTest {
                 .build()
                 .setVariable("x", 6);
         assertEquals(3d, e.evaluate(), 0d);
+    }
+
+
+    @Test
+    public void testExpressionAssignment1() throws Exception {
+        Expression e = new ExpressionBuilder("x=1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionAssignment2() throws Exception {
+        Expression e = new ExpressionBuilder("x=a+b/(c-d)")
+                .variables("a", "b", "c", "d")
+                .build()
+                .setVariable("a", 1.0)
+                .setVariable("b", 1.0)
+                .setVariable("c", 3.0)
+                .setVariable("d", 1.0);
+        assertEquals(1.5, e.evaluate(), 0d);
     }
 
     // thanks got out to David Sills
