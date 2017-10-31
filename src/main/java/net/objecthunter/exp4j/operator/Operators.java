@@ -25,8 +25,10 @@ public abstract class Operators {
     private static final int INDEX_UNARYMINUS = 6;
     private static final int INDEX_UNARYPLUS = 7;
     private static final int INDEX_ASSIGN = 8;
+    private static final int INDEX_GREATER_THAN = 9;
+    private static final int INDEX_LESS_THAN = 10;
 
-    private static final Operator[] builtinOperators = new Operator[9];
+    private static final Operator[] builtinOperators = new Operator[11];
 
     static {
         builtinOperators[INDEX_ADDITION] = new Operator("+", 2, true, Operator.PRECEDENCE_ADDITION) {
@@ -89,6 +91,18 @@ public abstract class Operators {
                 return args[1];
             }
         };
+        builtinOperators[INDEX_GREATER_THAN] = new Operator(">", 2, true, Operator.PRECEDENCE_COMPARE) {
+            @Override
+            public double apply(final double... args) {
+                return args[0] > args[1] ? 1 : 0;
+            }
+        };
+        builtinOperators[INDEX_LESS_THAN] = new Operator("<", 2, true, Operator.PRECEDENCE_COMPARE) {
+            @Override
+            public double apply(final double... args) {
+                return args[0] > args[1] ? 0 : 1;
+            }
+        };
     }
 
     public static Operator getBuiltinOperator(final char symbol, final int numArguments) {
@@ -115,6 +129,10 @@ public abstract class Operators {
                 return builtinOperators[INDEX_MODULO];
             case '=':
                 return builtinOperators[INDEX_ASSIGN];
+            case '>':
+                return builtinOperators[INDEX_GREATER_THAN];
+            case '<':
+                return builtinOperators[INDEX_LESS_THAN];
             default:
                 return null;
         }

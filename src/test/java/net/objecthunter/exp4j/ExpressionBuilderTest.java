@@ -1975,13 +1975,45 @@ public class ExpressionBuilderTest {
 
     @Test
     public void testExpression85() throws Exception {
-        Expression e = new ExpressionBuilder("1/2x")
+        Expression e = new ExpressionBuilder("a=1/2x")
                 .variables("x")
                 .build()
                 .setVariable("x", 6);
         assertEquals(3d, e.evaluate(), 0d);
     }
 
+    @Test
+    public void testExpressionMax() throws Exception {
+        Expression e = new ExpressionBuilder("max(a+2, 1)")
+                .variables("a")
+                .build()
+                .setVariable("a", 1d)
+                ;
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionCompare() throws Exception {
+        Expression e = new ExpressionBuilder("a=col*row/10<1")
+                .variables("col", "row")
+                .build()
+                .setVariable("col", 1d)
+                .setVariable("row", 11d)
+                ;
+        assertEquals(0d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionCondition() throws Exception {
+        // if args[0] == 1 return args[1] else return args[2]
+        Expression e = new ExpressionBuilder("a=condition(col*row - 2 > 10, 1, 2)")
+                .variables("col", "row")
+                .build()
+                .setVariable("col", 1d)
+                .setVariable("row", 11d)
+                ;
+        assertEquals(2d, e.evaluate(), 0d);
+    }
 
     @Test
     public void testExpressionAssignment1() throws Exception {

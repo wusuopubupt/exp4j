@@ -54,6 +54,9 @@ public abstract class Operator {
 
     public static final int PRECEDENCE_ASSIGN = 100;
 
+    public static final int PRECEDENCE_COMPARE = 200;
+
+
     /**
      * The set of allowed operator chars
      */

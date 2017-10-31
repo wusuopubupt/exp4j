@@ -43,8 +43,9 @@ public class Functions {
     private static final int INDEX_LOG2 = 21;
     private static final int INDEX_SGN = 22;
     private static final int INDEX_MAX = 23;
+    private static final int INDEX_CONDITION = 24;
 
-    private static final Function[] builtinFunctions = new Function[24];
+    private static final Function[] builtinFunctions = new Function[25];
 
     static {
         builtinFunctions[INDEX_SIN] = new Function("sin") {
@@ -72,7 +73,7 @@ public class Functions {
                 if (tan == 0d) {
                     throw new ArithmeticException("Division by zero in cotangent!");
                 }
-                return 1d/Math.tan(args[0]);
+                return 1d / Math.tan(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG] = new Function("log") {
@@ -195,16 +196,28 @@ public class Functions {
                 }
             }
         };
-   	builtinFunctions[INDEX_MAX] = new Function("max", 2) {
-	    @Override
-	    public double apply(double... args) {
+        builtinFunctions[INDEX_MAX] = new Function("max", 2) {
+            @Override
+            public double apply(double... args) {
                 return Math.max(args[0], args[1]);
-    	    }		
+            }
+        };
+        builtinFunctions[INDEX_CONDITION] = new Function("condition", 3) {
+            @Override
+            public double apply(double... args) {
+                if (1 == args[0]) {
+                    return args[1];
+                } else {
+                    return args[2];
+                }
+            }
         };
     }
 
+
     /**
      * Get the builtin function for a given name
+     *
      * @param name te name of the function
      * @return a Function instance
      */
@@ -258,7 +271,9 @@ public class Functions {
             return builtinFunctions[INDEX_SGN];
         } else if (name.equals("max")) {
             return builtinFunctions[INDEX_MAX];
-        } else {
+        } else if (name.equals("condition")) {
+            return builtinFunctions[INDEX_CONDITION];
+        }else {
             return null;
         }
     }
