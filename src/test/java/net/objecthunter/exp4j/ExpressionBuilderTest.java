@@ -1993,6 +1993,27 @@ public class ExpressionBuilderTest {
     }
 
     @Test
+    public void testMinWithNestedFunc() throws Exception {
+        double result = new ExpressionBuilder("min(1, ceil(x * y / 1) * 1)")
+                .variables("x", "y")
+                .build()
+                .setVariable("x", 100)
+                .setVariable("y", 2000d)
+                .evaluate();
+        assertTrue(1 == result);
+    }
+
+    @Test
+    public void testExpressionMin() throws Exception {
+        Expression e = new ExpressionBuilder("min(a+2, 1)")
+                .variables("a")
+                .build()
+                .setVariable("a", 1d)
+                ;
+        assertEquals(1d, e.evaluate(), 0d);
+    }
+
+    @Test
     public void testExpressionCompare() throws Exception {
         Expression e = new ExpressionBuilder("a=col*row/10<1")
                 .variables("col", "row")

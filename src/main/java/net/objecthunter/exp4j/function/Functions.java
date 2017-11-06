@@ -43,9 +43,10 @@ public class Functions {
     private static final int INDEX_LOG2 = 21;
     private static final int INDEX_SGN = 22;
     private static final int INDEX_MAX = 23;
-    private static final int INDEX_CONDITION = 24;
+    private static final int INDEX_MIN = 24;
+    private static final int INDEX_CONDITION = 25;
 
-    private static final Function[] builtinFunctions = new Function[25];
+    private static final Function[] builtinFunctions = new Function[26];
 
     static {
         builtinFunctions[INDEX_SIN] = new Function("sin") {
@@ -202,6 +203,12 @@ public class Functions {
                 return Math.max(args[0], args[1]);
             }
         };
+        builtinFunctions[INDEX_MIN] = new Function("min", 2) {
+            @Override
+            public double apply(double... args) {
+                return Math.min(args[0], args[1]);
+            }
+        };
         builtinFunctions[INDEX_CONDITION] = new Function("condition", 3) {
             @Override
             public double apply(double... args) {
@@ -271,7 +278,9 @@ public class Functions {
             return builtinFunctions[INDEX_SGN];
         } else if (name.equals("max")) {
             return builtinFunctions[INDEX_MAX];
-        } else if (name.equals("condition")) {
+        } else if (name.equals("min")) {
+            return builtinFunctions[INDEX_MIN];
+        }else if (name.equals("condition")) {
             return builtinFunctions[INDEX_CONDITION];
         }else {
             return null;
