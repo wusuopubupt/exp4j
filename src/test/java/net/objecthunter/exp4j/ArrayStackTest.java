@@ -15,13 +15,11 @@
  */
 package net.objecthunter.exp4j;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.EmptyStackException;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -67,9 +65,9 @@ public class ArrayStackTest {
             stack.push(i);
         }
 
-        assertEquals(4d, stack.peek(), 0d);
-        assertEquals(4d, stack.peek(), 0d);
-        assertEquals(4d, stack.peek(), 0d);
+        assertEquals(4d, (int)stack.peek(), 0d);
+        assertEquals(4d, (int)stack.peek(), 0d);
+        assertEquals(4d, (int)stack.peek(), 0d);
     }
 
     @Test
@@ -78,10 +76,10 @@ public class ArrayStackTest {
         stack.push(-1);
         double old = -1;
         for (int i = 0; i < 5; i++) {
-            assertEquals(old, stack.peek(), 0d);
+            assertEquals(old, (int)stack.peek(), 0d);
             stack.push(i);
             old = i;
-            assertEquals(old, stack.peek(), 0d);
+            assertEquals(old, (int)stack.peek(), 0d);
         }
     }
 
@@ -124,7 +122,7 @@ public class ArrayStackTest {
         for (int i = 0; i < 5; i++) {
             stack.push(i);
             assertEquals(1, stack.size());
-            assertEquals(i, stack.pop(), 0d);
+            assertEquals(i, (int)stack.pop(), 0d);
         }
 
         assertEquals(0, stack.size());

@@ -18,20 +18,16 @@ package net.objecthunter.exp4j;
 import net.objecthunter.exp4j.function.Function;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FunctionsTest {
     @Test(expected = IllegalArgumentException.class)
     public void testFunctionNameNull() throws Exception {
         Function f = new Function(null) {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -41,7 +37,7 @@ public class FunctionsTest {
     public void testFunctionNameEmpty() throws Exception {
         Function f = new Function("") {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -51,7 +47,7 @@ public class FunctionsTest {
     public void testFunctionNameZeroArgs() throws Exception {
         Function f = new Function("foo", 0) {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -62,7 +58,7 @@ public class FunctionsTest {
     public void testFunctionNameNegativeArgs() throws Exception {
         Function f = new Function("foo", -1) {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -72,7 +68,7 @@ public class FunctionsTest {
     public void testIllegalFunctionName1() throws Exception {
         Function f = new Function("1foo") {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -82,7 +78,7 @@ public class FunctionsTest {
     public void testIllegalFunctionName2() throws Exception {
         Function f = new Function("_&oo") {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -92,7 +88,7 @@ public class FunctionsTest {
     public void testIllegalFunctionName3() throws Exception {
         Function f = new Function("o+o") {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };

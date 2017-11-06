@@ -45,152 +45,153 @@ public class Functions {
     private static final int INDEX_MAX = 23;
     private static final int INDEX_MIN = 24;
     private static final int INDEX_CONDITION = 25;
+    private static final int INDEX_LEN = 26;
 
-    private static final Function[] builtinFunctions = new Function[26];
+    private static final Function[] builtinFunctions = new Function[27];
 
     static {
         builtinFunctions[INDEX_SIN] = new Function("sin") {
             @Override
-            public double apply(double... args) {
-                return Math.sin(args[0]);
+            public double apply(Object... args) {
+                return Math.sin((double)args[0]);
             }
         };
         builtinFunctions[INDEX_COS] = new Function("cos") {
             @Override
-            public double apply(double... args) {
-                return Math.cos(args[0]);
+            public double apply(Object... args) {
+                return Math.cos((double)args[0]);
             }
         };
         builtinFunctions[INDEX_TAN] = new Function("tan") {
             @Override
-            public double apply(double... args) {
-                return Math.tan(args[0]);
+            public double apply(Object... args) {
+                return Math.tan((double)args[0]);
             }
         };
         builtinFunctions[INDEX_COT] = new Function("cot") {
             @Override
-            public double apply(double... args) {
-                double tan = Math.tan(args[0]);
+            public double apply(Object... args) {
+                double tan = Math.tan((double)args[0]);
                 if (tan == 0d) {
                     throw new ArithmeticException("Division by zero in cotangent!");
                 }
-                return 1d / Math.tan(args[0]);
+                return 1d / Math.tan((double)args[0]);
             }
         };
         builtinFunctions[INDEX_LOG] = new Function("log") {
             @Override
-            public double apply(double... args) {
-                return Math.log(args[0]);
+            public double apply(Object... args) {
+                return Math.log((double)args[0]);
             }
         };
         builtinFunctions[INDEX_LOG2] = new Function("log2") {
             @Override
-            public double apply(double... args) {
-                return Math.log(args[0]) / Math.log(2d);
+            public double apply(Object... args) {
+                return Math.log((double)args[0]) / Math.log(2d);
             }
         };
         builtinFunctions[INDEX_LOG10] = new Function("log10") {
             @Override
-            public double apply(double... args) {
-                return Math.log10(args[0]);
+            public double apply(Object... args) {
+                return Math.log10((double)args[0]);
             }
         };
         builtinFunctions[INDEX_LOG1P] = new Function("log1p") {
             @Override
-            public double apply(double... args) {
-                return Math.log1p(args[0]);
+            public double apply(Object... args) {
+                return Math.log1p((double)args[0]);
             }
         };
         builtinFunctions[INDEX_ABS] = new Function("abs") {
             @Override
-            public double apply(double... args) {
-                return Math.abs(args[0]);
+            public double apply(Object... args) {
+                return Math.abs((double)args[0]);
             }
         };
         builtinFunctions[INDEX_ACOS] = new Function("acos") {
             @Override
-            public double apply(double... args) {
-                return Math.acos(args[0]);
+            public double apply(Object... args) {
+                return Math.acos((double)args[0]);
             }
         };
         builtinFunctions[INDEX_ASIN] = new Function("asin") {
             @Override
-            public double apply(double... args) {
-                return Math.asin(args[0]);
+            public double apply(Object... args) {
+                return Math.asin((double)args[0]);
             }
         };
         builtinFunctions[INDEX_ATAN] = new Function("atan") {
             @Override
-            public double apply(double... args) {
-                return Math.atan(args[0]);
+            public double apply(Object... args) {
+                return Math.atan((double)args[0]);
             }
         };
         builtinFunctions[INDEX_CBRT] = new Function("cbrt") {
             @Override
-            public double apply(double... args) {
-                return Math.cbrt(args[0]);
+            public double apply(Object... args) {
+                return Math.cbrt((double)args[0]);
             }
         };
         builtinFunctions[INDEX_FLOOR] = new Function("floor") {
             @Override
-            public double apply(double... args) {
-                return Math.floor(args[0]);
+            public double apply(Object... args) {
+                return Math.floor((double)args[0]);
             }
         };
         builtinFunctions[INDEX_SINH] = new Function("sinh") {
             @Override
-            public double apply(double... args) {
-                return Math.sinh(args[0]);
+            public double apply(Object... args) {
+                return Math.sinh((double)args[0]);
             }
         };
         builtinFunctions[INDEX_SQRT] = new Function("sqrt") {
             @Override
-            public double apply(double... args) {
-                return Math.sqrt(args[0]);
+            public double apply(Object... args) {
+                return Math.sqrt((double)args[0]);
             }
         };
         builtinFunctions[INDEX_TANH] = new Function("tanh") {
             @Override
-            public double apply(double... args) {
-                return Math.tanh(args[0]);
+            public double apply(Object... args) {
+                return Math.tanh((double)args[0]);
             }
         };
         builtinFunctions[INDEX_COSH] = new Function("cosh") {
             @Override
-            public double apply(double... args) {
-                return Math.cosh(args[0]);
+            public double apply(Object... args) {
+                return Math.cosh((double)args[0]);
             }
         };
         builtinFunctions[INDEX_CEIL] = new Function("ceil") {
             @Override
-            public double apply(double... args) {
-                return Math.ceil(args[0]);
+            public double apply(Object... args) {
+                return Math.ceil((double)args[0]);
             }
         };
         builtinFunctions[INDEX_POW] = new Function("pow", 2) {
             @Override
-            public double apply(double... args) {
-                return Math.pow(args[0], args[1]);
+            public double apply(Object... args) {
+                return Math.pow((double)args[0], (double)args[1]);
             }
         };
         builtinFunctions[INDEX_EXP] = new Function("exp", 1) {
             @Override
-            public double apply(double... args) {
-                return Math.exp(args[0]);
+            public double apply(Object... args) {
+                return Math.exp((double)args[0]);
             }
         };
         builtinFunctions[INDEX_EXPM1] = new Function("expm1", 1) {
             @Override
-            public double apply(double... args) {
-                return Math.expm1(args[0]);
+            public double apply(Object... args) {
+                return Math.expm1((double)args[0]);
             }
         };
         builtinFunctions[INDEX_SGN] = new Function("signum", 1) {
             @Override
-            public double apply(double... args) {
-                if (args[0] > 0) {
+            public double apply(Object... args) {
+                if ((double)args[0] > 0) {
                     return 1;
-                } else if (args[0] < 0) {
+                } else if ((double)args[0] < 0) {
                     return -1;
                 } else {
                     return 0;
@@ -199,24 +200,30 @@ public class Functions {
         };
         builtinFunctions[INDEX_MAX] = new Function("max", 2) {
             @Override
-            public double apply(double... args) {
-                return Math.max(args[0], args[1]);
+            public double apply(Object... args) {
+                return Math.max((double)args[0], (double)args[1]);
             }
         };
         builtinFunctions[INDEX_MIN] = new Function("min", 2) {
             @Override
-            public double apply(double... args) {
-                return Math.min(args[0], args[1]);
+            public double apply(Object... args) {
+                return Math.min((double)args[0], (double)args[1]);
             }
         };
         builtinFunctions[INDEX_CONDITION] = new Function("condition", 3) {
             @Override
-            public double apply(double... args) {
-                if (1 == args[0]) {
-                    return args[1];
+            public double apply(Object... args) {
+                if (1 == (double)args[0]) {
+                    return (double)args[1];
                 } else {
-                    return args[2];
+                    return (double)args[2];
                 }
+            }
+        };
+        builtinFunctions[INDEX_LEN] = new Function("len", 1) {
+            @Override
+            public double apply(Object... args) {
+                return ((String)args[0]).length();
             }
         };
     }
@@ -282,6 +289,8 @@ public class Functions {
             return builtinFunctions[INDEX_MIN];
         }else if (name.equals("condition")) {
             return builtinFunctions[INDEX_CONDITION];
+        }else if (name.equals("len")) {
+            return builtinFunctions[INDEX_LEN];
         }else {
             return null;
         }

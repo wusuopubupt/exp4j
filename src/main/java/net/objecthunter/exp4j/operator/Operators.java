@@ -33,74 +33,74 @@ public abstract class Operators {
     static {
         builtinOperators[INDEX_ADDITION] = new Operator("+", 2, true, Operator.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] + args[1];
+            public double apply(final Object... args) {
+                return (double)args[0] + (double)args[1];
             }
         };
         builtinOperators[INDEX_SUBTRACTION] = new Operator("-", 2, true, Operator.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] - args[1];
+            public double apply(final Object... args) {
+                return (double)args[0] - (double)args[1];
             }
         };
         builtinOperators[INDEX_UNARYMINUS] = new Operator("-", 1, false, Operator.PRECEDENCE_UNARY_MINUS) {
             @Override
-            public double apply(final double... args) {
-                return -args[0];
+            public double apply(final Object... args) {
+                return -(double)args[0];
             }
         };
         builtinOperators[INDEX_UNARYPLUS] = new Operator("+", 1, false, Operator.PRECEDENCE_UNARY_PLUS) {
             @Override
-            public double apply(final double... args) {
-                return args[0];
+            public double apply(final Object... args) {
+                return (double)args[0];
             }
         };
         builtinOperators[INDEX_MUTLIPLICATION] = new Operator("*", 2, true, Operator.PRECEDENCE_MULTIPLICATION) {
             @Override
-            public double apply(final double... args) {
-                return args[0] * args[1];
+            public double apply(final Object... args) {
+                return (double)args[0] * (double)args[1];
             }
         };
         builtinOperators[INDEX_DIVISION] = new Operator("/", 2, true, Operator.PRECEDENCE_DIVISION) {
             @Override
-            public double apply(final double... args) {
-                if (args[1] == 0d) {
+            public double apply(final Object... args) {
+                if ((double)args[1] == 0d) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return args[0] / args[1];
+                return (double)args[0] / (double)args[1];
             }
         };
         builtinOperators[INDEX_POWER] = new Operator("^", 2, false, Operator.PRECEDENCE_POWER) {
             @Override
-            public double apply(final double... args) {
-                return Math.pow(args[0], args[1]);
+            public double apply(final Object... args) {
+                return Math.pow((double)args[0], (double)args[1]);
             }
         };
         builtinOperators[INDEX_MODULO] = new Operator("%", 2, true, Operator.PRECEDENCE_MODULO) {
             @Override
-            public double apply(final double... args) {
-                if (args[1] == 0d) {
+            public double apply(final Object... args) {
+                if ((double)args[1] == 0d) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return args[0] % args[1];
+                return (double)args[0] % (double)args[1];
             }
         };
         builtinOperators[INDEX_ASSIGN] = new Operator("=", 2, true, Operator.PRECEDENCE_ASSIGN) {
             @Override
-            public double apply(final double... args) {
-                return args[1];
+            public double apply(final Object... args) {
+                return (double)args[1];
             }
         };
         builtinOperators[INDEX_GREATER_THAN] = new Operator(">", 2, true, Operator.PRECEDENCE_COMPARE) {
             @Override
-            public double apply(final double... args) {
-                return args[0] > args[1] ? 1 : 0;
+            public double apply(final Object... args) {
+                return (double)args[0] > (double)args[1] ? 1 : 0;
             }
         };
         builtinOperators[INDEX_LESS_THAN] = new Operator("<", 2, true, Operator.PRECEDENCE_COMPARE) {
             @Override
-            public double apply(final double... args) {
-                return args[0] > args[1] ? 0 : 1;
+            public double apply(final Object... args) {
+                return (double)args[0] > (double)args[1] ? 0 : 1;
             }
         };
     }

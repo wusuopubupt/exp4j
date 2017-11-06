@@ -29,12 +29,12 @@ public class Expression {
 
     private final Token[] tokens;
 
-    private final Map<String, Double> variables;
+    private final Map<String, Object> variables;
 
     private final Set<String> userFunctionNames;
 
-    private static Map<String, Double> createDefaultVariables() {
-        final Map<String, Double> vars = new HashMap<String, Double>(4);
+    private static Map<String, Object> createDefaultVariables() {
+        final Map<String, Object> vars = new HashMap<String, Object>(4);
         vars.put("pi", Math.PI);
         vars.put("π", Math.PI);
         vars.put("φ", 1.61803398874d);
@@ -49,7 +49,7 @@ public class Expression {
      */
     public Expression(final Expression existing) {
         this.tokens = Arrays.copyOf(existing.tokens, existing.tokens.length);
-        this.variables = new HashMap<String, Double>();
+        this.variables = new HashMap<String, Object>();
         this.variables.putAll(existing.variables);
         this.userFunctionNames = new HashSet<String>(existing.userFunctionNames);
     }
@@ -66,13 +66,13 @@ public class Expression {
         this.userFunctionNames = userFunctionNames;
     }
 
-    Expression(final Token[] tokens, Map<String, Double> variables) {
+    Expression(final Token[] tokens, Map<String, Object> variables) {
         this.tokens = tokens;
         this.variables = variables;
         this.userFunctionNames = Collections.<String>emptySet();
     }
 
-    Expression(final Token[] tokens, Map<String, Double> variables, Set<String> userFunctionNames) {
+    Expression(final Token[] tokens, Map<String, Object> variables, Set<String> userFunctionNames) {
         this.tokens = tokens;
         this.variables = variables;
         this.userFunctionNames = userFunctionNames;
@@ -205,11 +205,13 @@ public class Expression {
 
         for (int i = 0; i < tokens.length; i++) {
             Token t = tokens[i];
-            if (t.getType() == Token.TOKEN_NUMBER) {
+            if (t.getType() == Token.TOKEN_NUMBER ) {
                 output.push(((NumberToken) t).getValue());
-            } else if (t.getType() == Token.TOKEN_VARIABLE) {
+            } else if(t.getType() == Token.TOKEN_STRING){
+                output.push(((StringLiteralToken) t).getValue());
+            }else if (t.getType() == Token.TOKEN_VARIABLE) {
                 final String name = ((VariableToken) t).getName();
-                final Double value = this.variables.get(name);
+                final Object value = this.variables.get(name);
                 if (value == null) {
                     throw new IllegalArgumentException("No value has been set for the setVariable '" + name + "'.");
                 }
@@ -221,12 +223,12 @@ public class Expression {
                 }
                 if (op.getOperator().getNumOperands() == 2) {
                     /* pop the operands and push the result of the operation */
-                    double rightArg = output.pop();
-                    double leftArg = output.pop();
+                    Object rightArg = output.pop();
+                    Object leftArg = output.pop();
                     output.push(op.getOperator().apply(leftArg, rightArg));
                 } else if (op.getOperator().getNumOperands() == 1) {
                     /* pop the operand and push the result of the operation */
-                    double arg = output.pop();
+                    Object arg = output.pop();
                     output.push(op.getOperator().apply(arg));
                 }
             } else if (t.getType() == Token.TOKEN_FUNCTION) {
@@ -236,7 +238,7 @@ public class Expression {
                     throw new IllegalArgumentException("Invalid number of arguments available for '" + func.getFunction().getName() + "' function");
                 }
                 /* collect the arguments from the stack */
-                double[] args = new double[numArguments];
+                Object[] args = new Object[numArguments];
                 for (int j = numArguments - 1; j >= 0; j--) {
                     args[j] = output.pop();
                 }
@@ -246,6 +248,6 @@ public class Expression {
         if (output.size() > 1) {
             throw new IllegalArgumentException("Invalid number of items on the output queue. Might be caused by an invalid number of arguments for a function.");
         }
-        return output.pop();
+        return (double) output.pop();
     }
 }

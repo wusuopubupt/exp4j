@@ -15,17 +15,16 @@
  */
 package net.objecthunter.exp4j.shuntingyard;
 
-import static net.objecthunter.exp4j.TestUtil.*;
+import net.objecthunter.exp4j.operator.Operator;
+import net.objecthunter.exp4j.tokenizer.Token;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import net.objecthunter.exp4j.operator.Operator;
-import net.objecthunter.exp4j.tokenizer.Token;
-
-import org.junit.Test;
+import static net.objecthunter.exp4j.TestUtil.*;
 
 public class ShuntingYardTest {
 
@@ -92,7 +91,7 @@ public class ShuntingYardTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object...args) {
                 final int arg = (int) args[0];
                 if ((double) arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
@@ -131,11 +130,11 @@ public class ShuntingYardTest {
     public void testShuntingYard9() throws Exception {
         Operator reciprocal = new Operator("$", 1, true, Operator.PRECEDENCE_DIVISION) {
             @Override
-            public double apply(final double... args) {
+            public double apply(final Object...args) {
                 if (args[0] == 0d) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return 1d / args[0];
+                return 1d / (double)args[0];
             }
         };
         Map<String, Operator> userOperators = new HashMap<String, Operator>();

@@ -123,7 +123,7 @@ public abstract class Operator {
      * @param args the operands for the operation
      * @return the calculated result of the operation
      */
-    public abstract double apply(double... args);
+    public abstract double apply(Object... args);
 
     /**
      * Get the operator symbol

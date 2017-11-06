@@ -78,11 +78,13 @@ public class ExpressionTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = ((Double)args[0]).intValue();
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
                     throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
                 }
@@ -187,7 +189,7 @@ public class ExpressionTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 final int arg = (int) args[0];
                 if ((double) arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
@@ -212,7 +214,7 @@ public class ExpressionTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 final int arg = (int) args[0];
                 if ((double) arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");

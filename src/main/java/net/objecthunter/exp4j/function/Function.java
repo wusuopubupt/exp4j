@@ -77,7 +77,8 @@ public abstract class Function {
      * @param args the set of arguments used for calculating the function
      * @return the result of the function evaluation
      */
-    public abstract double apply(double... args);
+    public abstract double apply(Object... args);
+
 
     /**
      * Get the set of characters which are allowed for use in Function names.

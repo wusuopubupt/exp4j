@@ -69,8 +69,8 @@ public class ExpressionBuilderTest {
         Function log2 = new Function("log2", 1) {
 
             @Override
-            public double apply(double... args) {
-                return Math.log(args[0]) / Math.log(2);
+            public double apply(Object... args) {
+                return Math.log((double) args[0]) / Math.log(2);
             }
         };
         double result = new ExpressionBuilder("log2(4)")
@@ -87,10 +87,10 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 double sum = 0;
-                for (double arg : args) {
-                    sum += arg;
+                for (Object arg : args) {
+                    sum += (double) arg;
                 }
                 return sum / args.length;
             }
@@ -109,11 +109,13 @@ public class ExpressionBuilderTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = ((Double) args[0]).intValue();
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
                     throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
                 }
@@ -242,7 +244,7 @@ public class ExpressionBuilderTest {
                 .build();
         ValidationResult res = e.validate(false);
         assertFalse(res.isValid());
-        assertEquals(1,res.getErrors().size());
+        assertEquals(1, res.getErrors().size());
         assertEquals("Too many operators", res.getErrors().get(0));
     }
 
@@ -253,7 +255,7 @@ public class ExpressionBuilderTest {
                 .build();
         ValidationResult res = e.validate(false);
         assertFalse(res.isValid());
-        assertEquals(1,res.getErrors().size());
+        assertEquals(1, res.getErrors().size());
         assertEquals("Too many operators", res.getErrors().get(0));
     }
 
@@ -264,7 +266,7 @@ public class ExpressionBuilderTest {
                 .build();
         ValidationResult res = e.validate(false);
         assertFalse(res.isValid());
-        assertEquals(1,res.getErrors().size());
+        assertEquals(1, res.getErrors().size());
         assertEquals("Too many operators", res.getErrors().get(0));
     }
 
@@ -275,8 +277,8 @@ public class ExpressionBuilderTest {
         Function custom = new Function("timespi") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         Expression e = new ExpressionBuilder("timespi(x)")
@@ -293,8 +295,8 @@ public class ExpressionBuilderTest {
         Function custom = new Function("loglog") {
 
             @Override
-            public double apply(double... values) {
-                return Math.log(Math.log(values[0]));
+            public double apply(Object... values) {
+                return Math.log(Math.log((double) values[0]));
             }
         };
         Expression e = new ExpressionBuilder("loglog(x)")
@@ -311,15 +313,15 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.E;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         Expression e = new ExpressionBuilder("foo(bar(x))")
@@ -337,8 +339,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.E;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.E;
             }
         };
         double varX = 32.24979131d;
@@ -356,15 +358,15 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.E;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         double varX = 32.24979131d;
@@ -383,15 +385,15 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.E;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         double varX = 32.24979131d;
@@ -409,8 +411,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("half") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] / 2;
+            public double apply(Object... values) {
+                return (double) values[0] / 2;
             }
         };
         Expression e = new ExpressionBuilder("half(x)")
@@ -426,8 +428,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 2) {
 
             @Override
-            public double apply(double... values) {
-                return values[0] < values[1] ? values[1] : values[0];
+            public double apply(Object... values) {
+                return (double) values[0] < (double) values[1] ? (double) values[1] : (double) values[0];
             }
         };
         Expression e =
@@ -445,8 +447,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("power", 2) {
 
             @Override
-            public double apply(double... values) {
-                return Math.pow(values[0], values[1]);
+            public double apply(Object... values) {
+                return Math.pow((double) values[0], (double) values[1]);
             }
         };
         Expression e =
@@ -465,11 +467,11 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 5) {
 
             @Override
-            public double apply(double... values) {
-                double max = values[0];
+            public double apply(Object... values) {
+                double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
-                    if (values[i] > max) {
-                        max = values[i];
+                    if ((double) values[i] > max) {
+                        max = (double) values[i];
                     }
                 }
                 return max;
@@ -486,11 +488,11 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 3) {
 
             @Override
-            public double apply(double... values) {
-                double max = values[0];
+            public double apply(Object... values) {
+                double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
-                    if (values[i] > max) {
-                        max = values[i];
+                    if ((double) values[i] > max) {
+                        max = (double) values[i];
                     }
                 }
                 return max;
@@ -510,8 +512,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("multiply", 2) {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * values[1];
+            public double apply(Object... values) {
+                return (double) values[0] * (double) values[1];
             }
         };
         double varX = 1;
@@ -530,8 +532,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("timesPi") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         double varX = 1;
@@ -550,8 +552,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("multiply", 3) {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * values[1] * values[2];
+            public double apply(Object... values) {
+                return (double) values[0] * (double) values[1] * (double) values[2];
             }
         };
         double varX = 1;
@@ -569,8 +571,8 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("timesPi") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] * Math.PI;
+            public double apply(Object... values) {
+                return (double) values[0] * Math.PI;
             }
         };
         double varX = Math.E;
@@ -591,10 +593,10 @@ public class ExpressionBuilderTest {
         Function minFunction = new Function("min", 2) {
 
             @Override
-            public double apply(double[] values) {
+            public double apply(Object[] values) {
                 double currentMin = Double.POSITIVE_INFINITY;
-                for (double value : values) {
-                    currentMin = Math.min(currentMin, value);
+                for (Object value : values) {
+                    currentMin = Math.min(currentMin, (double) value);
                 }
                 return currentMin;
             }
@@ -613,8 +615,8 @@ public class ExpressionBuilderTest {
         Function minFunction = new Function("power", 2) {
 
             @Override
-            public double apply(double[] values) {
-                return Math.pow(values[0], values[1]);
+            public double apply(Object[] values) {
+                return Math.pow((double) values[0], (double) values[1]);
             }
         };
         ExpressionBuilder b = new ExpressionBuilder("power(2,3)")
@@ -631,11 +633,11 @@ public class ExpressionBuilderTest {
         Function maxFunction = new Function("max", 3) {
 
             @Override
-            public double apply(double... values) {
-                double max = values[0];
+            public double apply(Object... values) {
+                double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
-                    if (values[i] > max) {
-                        max = values[i];
+                    if ((double) values[i] > max) {
+                        max = (double) values[i];
                     }
                 }
                 return max;
@@ -653,11 +655,13 @@ public class ExpressionBuilderTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = ((Double) args[0]).intValue();
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
                     throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
                 }
@@ -694,11 +698,13 @@ public class ExpressionBuilderTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = ((Double) args[0]).intValue();
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
                     throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
                 }
@@ -726,8 +732,8 @@ public class ExpressionBuilderTest {
         Operator gteq = new Operator(">=", 2, true, Operator.PRECEDENCE_ADDITION - 1) {
 
             @Override
-            public double apply(double[] values) {
-                if (values[0] >= values[1]) {
+            public double apply(Object[] values) {
+                if ((double) values[0] >= (double) values[1]) {
                     return 1d;
                 } else {
                     return 0d;
@@ -760,8 +766,8 @@ public class ExpressionBuilderTest {
         Operator greaterEq = new Operator(">=", 2, true, 4) {
 
             @Override
-            public double apply(double[] values) {
-                if (values[0] >= values[1]) {
+            public double apply(Object[] values) {
+                if ((double) values[0] >= (double) values[1]) {
                     return 1d;
                 } else {
                     return 0d;
@@ -771,8 +777,8 @@ public class ExpressionBuilderTest {
         Operator greater = new Operator(">", 2, true, 4) {
 
             @Override
-            public double apply(double[] values) {
-                if (values[0] > values[1]) {
+            public double apply(Object[] values) {
+                if ((double) values[0] > (double) values[1]) {
                     return 1d;
                 } else {
                     return 0d;
@@ -782,8 +788,8 @@ public class ExpressionBuilderTest {
         Operator newPlus = new Operator(">=>", 2, true, 4) {
 
             @Override
-            public double apply(double[] values) {
-                return values[0] + values[1];
+            public double apply(Object[] values) {
+                return (double) values[0] + (double) values[1];
             }
         };
         Expression e = new ExpressionBuilder("1>2").operator(greater)
@@ -825,7 +831,7 @@ public class ExpressionBuilderTest {
         Operator fail = new Operator("2", 2, true, 1) {
 
             @Override
-            public double apply(double[] values) {
+            public double apply(Object[] values) {
                 return 0;
             }
         };
@@ -838,7 +844,7 @@ public class ExpressionBuilderTest {
         Function func = new Function("1gd") {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -849,7 +855,7 @@ public class ExpressionBuilderTest {
         Function func = new Function("+1gd") {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0;
             }
         };
@@ -966,8 +972,8 @@ public class ExpressionBuilderTest {
         Function custom = new Function("bar") {
 
             @Override
-            public double apply(double... values) {
-                return values[0] / 2;
+            public double apply(Object... values) {
+                return (double) values[0] / 2;
             }
         };
         double varBar = 1.3d;
@@ -1310,10 +1316,10 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 double sum = 0;
-                for (double arg : args) {
-                    sum += arg;
+                for (Object arg : args) {
+                    sum += (double) arg;
                 }
                 return sum / args.length;
             }
@@ -1557,14 +1563,14 @@ public class ExpressionBuilderTest {
                 .setVariable("x", 2.3)
                 .setVariable("y", 3.14);
         Future<Double> result = e.evaluateAsync(exec);
-        double expected = 3 * Math.log(3.14d)/(3.3);
+        double expected = 3 * Math.log(3.14d) / (3.3);
         assertEquals(expected, result.get(), 0d);
     }
 
     @Test
     public void testDocumentationExample3() throws Exception {
         double result = new ExpressionBuilder("2cos(xy)")
-                .variables("x","y")
+                .variables("x", "y")
                 .build()
                 .setVariable("x", 0.5d)
                 .setVariable("y", 0.25d)
@@ -1575,9 +1581,9 @@ public class ExpressionBuilderTest {
     @Test
     public void testDocumentationExample4() throws Exception {
         String expr = "pi+π+e+φ";
-        double expected = 2*Math.PI + Math.E + 1.61803398874d;
+        double expected = 2 * Math.PI + Math.E + 1.61803398874d;
         Expression e = new ExpressionBuilder(expr).build();
-        assertEquals(expected, e.evaluate(),0d);
+        assertEquals(expected, e.evaluate(), 0d);
     }
 
     @Test
@@ -1594,8 +1600,8 @@ public class ExpressionBuilderTest {
     public void testDocumentationExample6() throws Exception {
         Function logb = new Function("logb", 2) {
             @Override
-            public double apply(double... args) {
-                return Math.log(args[0]) / Math.log(args[1]);
+            public double apply(Object... args) {
+                return Math.log((double) args[0]) / Math.log((double) args[1]);
             }
         };
         double result = new ExpressionBuilder("logb(8, 2)")
@@ -1611,10 +1617,10 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 double sum = 0;
-                for (double arg : args) {
-                    sum += arg;
+                for (Object arg : args) {
+                    sum += (double) arg;
                 }
                 return sum / args.length;
             }
@@ -1633,11 +1639,13 @@ public class ExpressionBuilderTest {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = ((Double) args[0]).intValue();
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
                     throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
                 }
@@ -1663,8 +1671,8 @@ public class ExpressionBuilderTest {
         Operator gteq = new Operator(">=", 2, true, Operator.PRECEDENCE_ADDITION - 1) {
 
             @Override
-            public double apply(double[] values) {
-                if (values[0] >= values[1]) {
+            public double apply(Object[] values) {
+                if ((double)values[0] >= (double)values[1]) {
                     return 1d;
                 } else {
                     return 0d;
@@ -1684,11 +1692,11 @@ public class ExpressionBuilderTest {
     public void testDocumentationExample10() throws Exception {
         Operator reciprocal = new Operator("$", 1, true, Operator.PRECEDENCE_DIVISION) {
             @Override
-            public double apply(final double... args) {
-                if (args[0] == 0d) {
+            public double apply(final Object... args) {
+                if ((double)args[0] == 0d) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return 1d / args[0];
+                return 1d / (double)args[0];
             }
         };
         Expression e = new ExpressionBuilder("0$").operator(reciprocal).build();
@@ -1705,7 +1713,7 @@ public class ExpressionBuilderTest {
         assertFalse(res.isValid());
         assertEquals(1, res.getErrors().size());
 
-        e.setVariable("x",1d);
+        e.setVariable("x", 1d);
         res = e.validate();
         assertTrue(res.isValid());
     }
@@ -1987,8 +1995,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("max(a+2, 1)")
                 .variables("a")
                 .build()
-                .setVariable("a", 1d)
-                ;
+                .setVariable("a", 1d);
         assertEquals(3d, e.evaluate(), 0d);
     }
 
@@ -2008,8 +2015,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("min(a+2, 1)")
                 .variables("a")
                 .build()
-                .setVariable("a", 1d)
-                ;
+                .setVariable("a", 1d);
         assertEquals(1d, e.evaluate(), 0d);
     }
 
@@ -2019,8 +2025,7 @@ public class ExpressionBuilderTest {
                 .variables("col", "row")
                 .build()
                 .setVariable("col", 1d)
-                .setVariable("row", 11d)
-                ;
+                .setVariable("row", 11d);
         assertEquals(0d, e.evaluate(), 0d);
     }
 
@@ -2031,8 +2036,7 @@ public class ExpressionBuilderTest {
                 .variables("col", "row")
                 .build()
                 .setVariable("col", 1d)
-                .setVariable("row", 11d)
-                ;
+                .setVariable("row", 11d);
         assertEquals(2d, e.evaluate(), 0d);
     }
 
@@ -2056,7 +2060,7 @@ public class ExpressionBuilderTest {
     }
 
     // thanks got out to David Sills
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testSpaceBetweenNumbers() throws Exception {
         Expression e = new ExpressionBuilder("1 1")
                 .build();
@@ -2634,8 +2638,8 @@ public class ExpressionBuilderTest {
         Function log = new Function("λωγ", 1) {
 
             @Override
-            public double apply(double... args) {
-                return log(args[0]);
+            public double apply(Object... args) {
+                return log((double)args[0]);
             }
         };
 
@@ -2652,8 +2656,8 @@ public class ExpressionBuilderTest {
         Function log = new Function("λ_ωγ", 1) {
 
             @Override
-            public double apply(double... args) {
-                return log(args[0]);
+            public double apply(Object... args) {
+                return log((double)args[0]);
             }
         };
 
@@ -2663,7 +2667,7 @@ public class ExpressionBuilderTest {
                 .build()
                 .setVariable("π", PI)
                 .setVariable("ε", E);
-        assertEquals(3*log(PI*E*6), e.evaluate(), 0d);
+        assertEquals(3 * log(PI * E * 6), e.evaluate(), 0d);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -2717,7 +2721,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1var_1")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1",2);
+                .setVariable("var_1", 2);
         assertEquals(4d, e.evaluate(), 0d);
     }
 
@@ -2726,7 +2730,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1(2)")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1",2);
+                .setVariable("var_1", 2);
         assertEquals(4d, e.evaluate(), 0d);
     }
 
@@ -2735,8 +2739,8 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1log(2)")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1",2);
-        assertEquals(2*log(2), e.evaluate(), 0d);
+                .setVariable("var_1", 2);
+        assertEquals(2 * log(2), e.evaluate(), 0d);
     }
 
     // thanks go out to vandanagopal for reporting the issue
@@ -2745,8 +2749,8 @@ public class ExpressionBuilderTest {
     public void testSecondArgumentNegative() throws Exception {
         Function round = new Function("MULTIPLY", 2) {
             @Override
-            public double apply(double... args) {
-                return Math.round(args[0] * args[1]);
+            public double apply(Object... args) {
+                return Math.round((double)args[0] * (double)args[1]);
             }
         };
         double result = new ExpressionBuilder("MULTIPLY(2,-1)")
@@ -2772,13 +2776,15 @@ public class ExpressionBuilderTest {
         final Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
 
             @Override
-            public double apply(double... args) {
-                final int arg = (int) args[0];
-                if ((double) arg != args[0]) {
+            public double apply(Object... args) {
+                final int arg = (int)((double) args[0]);
+                /*
+                if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
                 }
+                */
                 if (arg < 0) {
-                    throw new IllegalArgumentException("The operand of the factorial can not be less than zero");
+                    throw new IllegalArgumentException("The operand of the factorial can not be positive integer");
                 }
                 double result = 1;
                 for (int i = 1; i <= arg; i++) {
@@ -2798,7 +2804,7 @@ public class ExpressionBuilderTest {
     }
 
     @Test
-    public void testGetVariableNames1() throws Exception{
+    public void testGetVariableNames1() throws Exception {
         Expression e = new ExpressionBuilder("b*a-9.24c")
                 .variables("b", "a", "c")
                 .build();
@@ -2809,7 +2815,7 @@ public class ExpressionBuilderTest {
     }
 
     @Test
-    public void testGetVariableNames2() throws Exception{
+    public void testGetVariableNames2() throws Exception {
         Expression e = new ExpressionBuilder("log(bar)-FOO.s/9.24c")
                 .variables("bar", "FOO.s", "c")
                 .build();
@@ -2832,7 +2838,7 @@ public class ExpressionBuilderTest {
                 .variables("tr")
                 .function(new Function("tr") {
                     @Override
-                    public double apply(double... args) {
+                    public double apply(Object... args) {
                         return 0;
                     }
                 })
@@ -2870,15 +2876,16 @@ public class ExpressionBuilderTest {
     public void testCustomPercent() {
         Function percentage = new Function("percentage", 2) {
             @Override
-            public double apply(double... args) {
-                double val = args[0];
-                double percent = args[1];
+            public double apply(Object... args) {
+                double val = (double)args[0];
+                double percent = (double)args[1];
                 if (percent < 0) {
-                    return val - val * Math.abs(percent)/100d;
+                    return val - val * Math.abs(percent) / 100d;
                 } else {
-                    return val - val * percent/100d;
+                    return val - val * percent / 100d;
                 }
             }
+
         };
 
         Expression e = new ExpressionBuilder("percentage(1000,-10)")
@@ -2889,6 +2896,32 @@ public class ExpressionBuilderTest {
         e = new ExpressionBuilder("percentage(1000,12)")
                 .function(percentage)
                 .build();
-        assertEquals(0d, 1000d*0.12d, e.evaluate());
+        assertEquals(0d, 1000d * 0.12d, e.evaluate());
     }
- }
+
+    @Test
+    public void testExpressionStringLiteral() throws Exception {
+        Expression e = new ExpressionBuilder("x=len(\"abc\")")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionStringLiteralEmpty() throws Exception {
+        Expression e = new ExpressionBuilder("x=len(\"\")")
+                .build();
+        assertEquals(0d, e.evaluate(), 0d);
+    }
+
+    @Test(expected = Exception.class)
+    public void testBadExpressionStringLiteral1() throws Exception {
+        Expression e = new ExpressionBuilder("x=len(\"abc)")
+                .build();
+    }
+
+    @Test
+    public void testBadExpressionStringLiteral2() throws Exception {
+        Expression e = new ExpressionBuilder("x=len(\"ab$c\")")
+                .build();
+    }
+}

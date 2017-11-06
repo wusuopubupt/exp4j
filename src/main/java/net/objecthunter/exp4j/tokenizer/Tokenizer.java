@@ -115,6 +115,8 @@ public class Tokenizer {
             }
 
             return parseFunctionOrVariableOrAssignment();
+        } else if('"' == ch) {
+            return parseStringLiteral(ch);
         }
         throw new IllegalArgumentException("Unable to parse char '" + ch + "' (Code:" + (int) ch + ") at [" + pos + "]");
     }
@@ -294,6 +296,31 @@ public class Tokenizer {
                 Character.isDigit(codePoint) ||
                 codePoint == '_' ||
                 codePoint == '.';
+    }
+
+    // fistChar is "
+    private Token parseStringLiteral(final char firstChar) {
+        final int offset = this.pos;
+        int len = 1;
+        this.pos++;
+        StringBuilder sb = new StringBuilder();
+        if (isEndOfExpression(offset + len)) {
+            throw new RuntimeException("Bad start of string token at position " + pos);
+        }
+        while (!isEndOfExpression(offset + len) && ('"' != expression[offset + len])){
+            sb.append(expression[offset+len]);
+            len++;
+            this.pos++;
+        }
+
+        // end with "
+        if('"' != expression[offset + len]) {
+            throw new RuntimeException("Bad end of string token at position " + pos);
+        }
+        this.pos++;
+
+        lastToken = new StringLiteralToken(sb.toString());
+        return lastToken;
     }
 
     private boolean isEndOfExpression(int offset) {

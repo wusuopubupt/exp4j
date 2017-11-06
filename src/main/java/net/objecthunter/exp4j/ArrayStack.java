@@ -25,7 +25,7 @@ import java.util.EmptyStackException;
  */
 class ArrayStack {
 
-    private double[] data;
+    private Object[] data;
 
     private int idx;
 
@@ -39,13 +39,13 @@ class ArrayStack {
                     "Stack's capacity must be positive");
         }
 
-        data = new double[initialCapacity];
+        data = new Object[initialCapacity];
         idx = -1;
     }
 
-    void push(double value) {
+    void push(Object value) {
         if (idx + 1 == data.length) {
-            double[] temp = new double[(int) (data.length * 1.2) + 1];
+            Object[] temp = new Object[(int) (data.length * 1.2) + 1];
             System.arraycopy(data, 0, temp, 0, data.length);
             data = temp;
         }
@@ -53,14 +53,14 @@ class ArrayStack {
         data[++idx] = value;
     }
 
-    double peek() {
+    Object peek() {
         if (idx == -1) {
             throw new EmptyStackException();
         }
         return data[idx];
     }
 
-    double pop() {
+    Object pop() {
         if (idx == -1) {
             throw new EmptyStackException();
         }

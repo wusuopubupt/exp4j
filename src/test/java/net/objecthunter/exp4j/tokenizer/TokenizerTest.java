@@ -15,18 +15,18 @@
  */
 package net.objecthunter.exp4j.tokenizer;
 
-import static net.objecthunter.exp4j.TestUtil.*;
-import static org.junit.Assert.*;
+import net.objecthunter.exp4j.function.Function;
+import net.objecthunter.exp4j.operator.Operator;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import net.objecthunter.exp4j.function.Function;
-import net.objecthunter.exp4j.operator.Operator;
-
-import org.junit.Test;
+import static net.objecthunter.exp4j.TestUtil.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TokenizerTest {
 
@@ -376,8 +376,8 @@ public class TokenizerTest {
         final Function log2 = new Function("log2") {
 
             @Override
-            public double apply(double... args) {
-                return Math.log(args[0]) / Math.log(2d);
+            public double apply(Object... args) {
+                return Math.log((double)args[0]) / Math.log(2d);
             }
         };
 
@@ -405,10 +405,10 @@ public class TokenizerTest {
         Function avg = new Function("avg", 2) {
 
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 double sum = 0;
-                for (double arg : args) {
-                    sum += arg;
+                for (Object arg : args) {
+                    sum += (double)arg;
                 }
                 return sum / args.length;
             }
@@ -442,7 +442,7 @@ public class TokenizerTest {
     public void testTokenization20() throws Exception {
         Operator factorial = new Operator("!", 1, true, Operator.PRECEDENCE_POWER + 1) {
             @Override
-            public double apply(double... args) {
+            public double apply(Object... args) {
                 return 0d;
             }
         };
