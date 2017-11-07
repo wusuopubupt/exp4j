@@ -1672,7 +1672,7 @@ public class ExpressionBuilderTest {
 
             @Override
             public double apply(Object[] values) {
-                if ((double)values[0] >= (double)values[1]) {
+                if ((double) values[0] >= (double) values[1]) {
                     return 1d;
                 } else {
                     return 0d;
@@ -1693,10 +1693,10 @@ public class ExpressionBuilderTest {
         Operator reciprocal = new Operator("$", 1, true, Operator.PRECEDENCE_DIVISION) {
             @Override
             public double apply(final Object... args) {
-                if ((double)args[0] == 0d) {
+                if ((double) args[0] == 0d) {
                     throw new ArithmeticException("Division by zero!");
                 }
-                return 1d / (double)args[0];
+                return 1d / (double) args[0];
             }
         };
         Expression e = new ExpressionBuilder("0$").operator(reciprocal).build();
@@ -2639,7 +2639,7 @@ public class ExpressionBuilderTest {
 
             @Override
             public double apply(Object... args) {
-                return log((double)args[0]);
+                return log((double) args[0]);
             }
         };
 
@@ -2657,7 +2657,7 @@ public class ExpressionBuilderTest {
 
             @Override
             public double apply(Object... args) {
-                return log((double)args[0]);
+                return log((double) args[0]);
             }
         };
 
@@ -2750,7 +2750,7 @@ public class ExpressionBuilderTest {
         Function round = new Function("MULTIPLY", 2) {
             @Override
             public double apply(Object... args) {
-                return Math.round((double)args[0] * (double)args[1]);
+                return Math.round((double) args[0] * (double) args[1]);
             }
         };
         double result = new ExpressionBuilder("MULTIPLY(2,-1)")
@@ -2777,7 +2777,7 @@ public class ExpressionBuilderTest {
 
             @Override
             public double apply(Object... args) {
-                final int arg = (int)((double) args[0]);
+                final int arg = (int) ((double) args[0]);
                 /*
                 if (arg != args[0]) {
                     throw new IllegalArgumentException("Operand for factorial has to be an integer");
@@ -2877,8 +2877,8 @@ public class ExpressionBuilderTest {
         Function percentage = new Function("percentage", 2) {
             @Override
             public double apply(Object... args) {
-                double val = (double)args[0];
-                double percent = (double)args[1];
+                double val = (double) args[0];
+                double percent = (double) args[1];
                 if (percent < 0) {
                     return val - val * Math.abs(percent) / 100d;
                 } else {
@@ -2921,7 +2921,20 @@ public class ExpressionBuilderTest {
 
     @Test
     public void testBadExpressionStringLiteral2() throws Exception {
-        Expression e = new ExpressionBuilder("x=len(\"ab$c\")")
+        String s;
+        Expression e;
+
+        s = "a\"";
+        e = new ExpressionBuilder("x=len(\"a\\\"\")").build();
+        assertEquals(2d, e.evaluate(), 0d);
+
+        s = "\"\\\n";
+        e = new ExpressionBuilder("x=len(\"\\\"\\\\\\n\")").build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        s = "aa$bb\"cc\ndd\"ee";
+        e = new ExpressionBuilder("x=len(\"aa$bb\\\"cc\\ndd\\\"ee\")")
                 .build();
+        assertEquals(14d, e.evaluate(), 0d);
     }
 }

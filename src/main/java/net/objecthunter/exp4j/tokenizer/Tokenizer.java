@@ -308,6 +308,19 @@ public class Tokenizer {
             throw new RuntimeException("Bad start of string token at position " + pos);
         }
         while (!isEndOfExpression(offset + len) && ('"' != expression[offset + len])){
+            char c = expression[offset + len];
+            if('\\' == c && !isEndOfExpression(offset + len + 1)) {
+                char nextChar = expression[offset + len + 1];
+                if('"' == nextChar || '\\' == nextChar) {
+					c = nextChar;			
+					len++;
+					this.pos++;
+                } else if ('n' == nextChar) {
+				    c = '\n';
+					len++;
+					this.pos++;
+				}
+            }
             sb.append(expression[offset+len]);
             len++;
             this.pos++;
