@@ -285,7 +285,7 @@ public class ExpressionBuilderTest {
                 .function(custom)
                 .variables("x")
                 .build()
-                .setVariable("x", 1);
+                .setVariable("x", 1d);
         double result = e.evaluate();
         assertTrue(result == Math.PI);
     }
@@ -303,7 +303,7 @@ public class ExpressionBuilderTest {
                 .variables("x")
                 .function(custom)
                 .build()
-                .setVariable("x", 1);
+                .setVariable("x", 1d);
         double result = e.evaluate();
         assertTrue(result == Math.log(Math.log(1)));
     }
@@ -329,7 +329,7 @@ public class ExpressionBuilderTest {
                 .function(custom2)
                 .variables("x")
                 .build()
-                .setVariable("x", 1);
+                .setVariable("x", 1d);
         double result = e.evaluate();
         assertTrue(result == 1 * Math.E * Math.PI);
     }
@@ -866,8 +866,8 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("7*x + 3*y")
                 .variables("x", "y")
                 .build()
-                .setVariable("x", 1)
-                .setVariable("y", 2);
+                .setVariable("x", 1d)
+                .setVariable("y", 2d);
         double result = e.evaluate();
         assertTrue(result == 13d);
     }
@@ -877,8 +877,8 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("7*x + 3*y")
                 .variables("x", "y")
                 .build()
-                .setVariable("x", 1)
-                .setVariable("y", 2);
+                .setVariable("x", 1d)
+                .setVariable("y", 2d);
         double result = e.evaluate();
         assertTrue(result == 13d);
     }
@@ -1986,7 +1986,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("a=1/2x")
                 .variables("x")
                 .build()
-                .setVariable("x", 6);
+                .setVariable("x", 6d);
         assertEquals(3d, e.evaluate(), 0d);
     }
 
@@ -2004,7 +2004,7 @@ public class ExpressionBuilderTest {
         double result = new ExpressionBuilder("min(1, ceil(x * y / 1) * 1)")
                 .variables("x", "y")
                 .build()
-                .setVariable("x", 100)
+                .setVariable("x", 100d)
                 .setVariable("y", 2000d)
                 .evaluate();
         assertTrue(1 == result);
@@ -2712,7 +2712,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_12")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1", 2);
+                .setVariable("var_1", 2d);
         assertEquals(4d, e.evaluate(), 0d);
     }
 
@@ -2721,7 +2721,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1var_1")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1", 2);
+                .setVariable("var_1", 2d);
         assertEquals(4d, e.evaluate(), 0d);
     }
 
@@ -2730,7 +2730,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1(2)")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1", 2);
+                .setVariable("var_1", 2d);
         assertEquals(4d, e.evaluate(), 0d);
     }
 
@@ -2739,7 +2739,7 @@ public class ExpressionBuilderTest {
         Expression e = new ExpressionBuilder("var_1log(2)")
                 .variable("var_1")
                 .build()
-                .setVariable("var_1", 2);
+                .setVariable("var_1", 2d);
         assertEquals(2 * log(2), e.evaluate(), 0d);
     }
 
@@ -2932,9 +2932,11 @@ public class ExpressionBuilderTest {
         e = new ExpressionBuilder("x=len(\"\\\"\\\\\\n\")").build();
         assertEquals(3d, e.evaluate(), 0d);
 
-        s = "aa$bb\"cc\ndd\"ee";
         e = new ExpressionBuilder("x=len(\"aa$bb\\\"cc\\ndd\\\"ee\")")
-                .build();
+                .variables("s")
+                .build()
+                .setVariable(s, "aa$bb\"cc\ndd\"ee");
         assertEquals(14d, e.evaluate(), 0d);
     }
+
 }

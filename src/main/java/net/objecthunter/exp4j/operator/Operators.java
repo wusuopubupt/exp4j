@@ -58,7 +58,7 @@ public abstract class Operators {
         builtinOperators[INDEX_MUTLIPLICATION] = new Operator("*", 2, true, Operator.PRECEDENCE_MULTIPLICATION) {
             @Override
             public double apply(final Object... args) {
-                return (double)args[0] * (double)args[1];
+                return (Double)args[0] * (Double)args[1];
             }
         };
         builtinOperators[INDEX_DIVISION] = new Operator("/", 2, true, Operator.PRECEDENCE_DIVISION) {
