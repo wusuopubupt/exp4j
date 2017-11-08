@@ -193,6 +193,11 @@ public class Expression {
     }
 
     public double evaluate() {
+        // may be throwing exception
+        return (double) evaluateToObject();
+    }
+
+    public Object evaluateToObject() {
         final ArrayStack output = new ArrayStack();
 
         if (isAssignExpression()) {
@@ -200,7 +205,7 @@ public class Expression {
             for (int i = 1; i < tokens.length - 1; i++) {
                 newToken[i - 1] = tokens[i];
             }
-            return new Expression(newToken, this.variables).evaluate();
+            return new Expression(newToken, this.variables).evaluateToObject();
         }
 
         for (int i = 0; i < tokens.length; i++) {
@@ -209,6 +214,8 @@ public class Expression {
                 output.push(((NumberToken) t).getValue());
             } else if(t.getType() == Token.TOKEN_STRING){
                 output.push(((StringLiteralToken) t).getValue());
+            } else if(t.getType() == Token.TOKEN_DOUBLE_ARRAY){
+                output.push(((DoubleArrayToken) t).getValue());
             }else if (t.getType() == Token.TOKEN_VARIABLE) {
                 final String name = ((VariableToken) t).getName();
                 final Object value = this.variables.get(name);
@@ -248,6 +255,6 @@ public class Expression {
         if (output.size() > 1) {
             throw new IllegalArgumentException("Invalid number of items on the output queue. Might be caused by an invalid number of arguments for a function.");
         }
-        return (double) output.pop();
+        return output.pop();
     }
 }

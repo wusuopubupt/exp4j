@@ -100,6 +100,8 @@ public class Tokenizer {
             return parseParentheses(true);
         } else if (isCloseParentheses(ch)) {
             return parseParentheses(false);
+        } else if(isOpenSquareBrackets(ch)) {
+            return parseSquareBrackets(ch);
         } else if (Operator.isAllowedOperatorChar(ch)) {
             return parseOperatorToken(ch);
         } else if (isAlphabetic(ch) || ch == '_') {
@@ -141,13 +143,69 @@ public class Tokenizer {
         return lastToken;
     }
 
+
+    private double[] castStringArrayToDoubleArray(String[] stringArray) {
+        double[] doubleArray = new double[stringArray.length];
+        int i = 0;
+        try {
+            for (i = 0; i < stringArray.length; i++) {
+                doubleArray[i] = Double.valueOf(stringArray[i]);
+            }
+        } catch (Exception e) {
+            throw new NumberFormatException("Failed to cast String array " + stringArray.toString() + " to Double array" + e.getMessage());
+        }
+        return doubleArray;
+    }
+
+    private Token parseSquareBrackets(char ch) {
+        final int offset = this.pos;
+        int len = 1;
+        this.pos++;
+        if (isEndOfExpression(offset + len)) {
+            throw new IllegalArgumentException("Bad start of list token at position " + pos);
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!isEndOfExpression(offset + len) && !isCloseSquareBrackets(expression[offset + len])){
+            sb.append(expression[offset+len]);
+            len++;
+            this.pos++;
+        }
+
+        if(isEndOfExpression(offset + len) || !isCloseSquareBrackets(expression[offset + len])) {
+            throw new IllegalArgumentException("Bad end of list token at position " + pos);
+        }
+        this.pos++;
+
+        String[] stringArray = sb.toString().split(",");
+        double[] doubleArray = castStringArrayToDoubleArray(stringArray);
+        lastToken = new DoubleArrayToken(doubleArray);
+        return lastToken;
+    }
+
     private boolean isOpenParentheses(char ch) {
-        return ch == '(' || ch == '{' || ch == '[';
+        return '(' == ch;
     }
 
     private boolean isCloseParentheses(char ch) {
-        return ch == ')' || ch == '}' || ch == ']';
+        return ')' == ch;
     }
+
+    private boolean isOpenSquareBrackets(char ch) {
+        return '[' == ch;
+    }
+
+    private boolean isCloseSquareBrackets(char ch) {
+        return ']' == ch;
+    }
+
+    private boolean isOpenCurlyBrace(char ch) {
+        return '{' == ch;
+    }
+
+    private boolean isCloseCurlyBrace(char ch) {
+        return '}' == ch;
+    }
+
 
     private Token parseFunctionOrVariableOrAssignment() {
         final int offset = this.pos;
@@ -305,7 +363,7 @@ public class Tokenizer {
         this.pos++;
         StringBuilder sb = new StringBuilder();
         if (isEndOfExpression(offset + len)) {
-            throw new RuntimeException("Bad start of string token at position " + pos);
+            throw new IllegalArgumentException("Bad start of string token at position " + pos);
         }
         while (!isEndOfExpression(offset + len) && ('"' != expression[offset + len])){
             char c = expression[offset + len];
@@ -327,8 +385,8 @@ public class Tokenizer {
         }
 
         // end with "
-        if('"' != expression[offset + len]) {
-            throw new RuntimeException("Bad end of string token at position " + pos);
+        if(isEndOfExpression(offset + len) || '"' != expression[offset + len]) {
+            throw new IllegalArgumentException("Bad end of string token at position " + pos);
         }
         this.pos++;
 

@@ -50,6 +50,7 @@ public class ShuntingYard {
                 case Token.TOKEN_NUMBER:
                 case Token.TOKEN_VARIABLE:
                 case Token.TOKEN_STRING:
+                case Token.TOKEN_DOUBLE_ARRAY:
                     output.add(token);
                     break;
                 case Token.TOKEN_FUNCTION:

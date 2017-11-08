@@ -2939,4 +2939,48 @@ public class ExpressionBuilderTest {
         assertEquals(14d, e.evaluate(), 0d);
     }
 
+
+    @Test
+    public void testExpressionArraySize() throws Exception {
+        Expression e = new ExpressionBuilder("x=array_size([1,   2,3])")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionWithArraySum1() throws Exception {
+        Expression e = new ExpressionBuilder("x=array_sum([1,   2,3])")
+                .build();
+        assertEquals(6d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionWithArraySum2() throws Exception {
+        double[] nums = new double[]{1d, 2d, 3d};
+        Expression e = new ExpressionBuilder("x=array_sum(a)")
+                .variables("a")
+                .build()
+                .setVariable("a", nums);
+        assertEquals(6d, e.evaluate(), 0d);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void testExpressionWithArraySum3() throws Exception {
+        Expression e = new ExpressionBuilder("x=array_sum([\"1\",   2,3])")
+                .build();
+        assertEquals(6d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionAssignArray() throws Exception {
+        double[] nums = new double[]{1d, 2d, 3d};
+        Expression e = new ExpressionBuilder("x=a")
+                .variables("a")
+                .build()
+                .setVariable("a", nums);
+        double[] evaluateRet = (double[])e.evaluateToObject();
+        for(int i = 0; i < nums.length; i++) {
+            assertEquals(nums[i], evaluateRet[i], 0d);
+        }
+    }
 }
