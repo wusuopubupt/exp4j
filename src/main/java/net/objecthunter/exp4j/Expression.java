@@ -90,8 +90,8 @@ public class Expression {
         }
     }
 
-    public Expression setVariables(Map<String, Double> variables) {
-        for (Map.Entry<String, Double> v : variables.entrySet()) {
+    public Expression setVariables(Map<String, Object> variables) {
+        for (Map.Entry<String, Object> v : variables.entrySet()) {
             this.setVariable(v.getKey(), v.getValue());
         }
         return this;
