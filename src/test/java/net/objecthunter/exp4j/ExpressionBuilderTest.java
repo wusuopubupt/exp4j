@@ -69,7 +69,7 @@ public class ExpressionBuilderTest {
         Function log2 = new Function("log2", 1) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return Math.log((double) args[0]) / Math.log(2);
             }
         };
@@ -87,7 +87,7 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 double sum = 0;
                 for (Object arg : args) {
                     sum += (double) arg;
@@ -277,7 +277,7 @@ public class ExpressionBuilderTest {
         Function custom = new Function("timespi") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -295,7 +295,7 @@ public class ExpressionBuilderTest {
         Function custom = new Function("loglog") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return Math.log(Math.log((double) values[0]));
             }
         };
@@ -313,14 +313,14 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -339,7 +339,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.E;
             }
         };
@@ -358,14 +358,14 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -385,14 +385,14 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("foo") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.E;
             }
         };
         Function custom2 = new Function("bar") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -411,7 +411,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("half") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] / 2;
             }
         };
@@ -428,7 +428,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 2) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] < (double) values[1] ? (double) values[1] : (double) values[0];
             }
         };
@@ -447,7 +447,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("power", 2) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return Math.pow((double) values[0], (double) values[1]);
             }
         };
@@ -467,7 +467,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 5) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
                     if ((double) values[i] > max) {
@@ -488,7 +488,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("max", 3) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
                     if ((double) values[i] > max) {
@@ -512,7 +512,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("multiply", 2) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * (double) values[1];
             }
         };
@@ -532,7 +532,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("timesPi") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -552,7 +552,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("multiply", 3) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * (double) values[1] * (double) values[2];
             }
         };
@@ -571,7 +571,7 @@ public class ExpressionBuilderTest {
         Function custom1 = new Function("timesPi") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] * Math.PI;
             }
         };
@@ -593,7 +593,7 @@ public class ExpressionBuilderTest {
         Function minFunction = new Function("min", 2) {
 
             @Override
-            public double apply(Object[] values) {
+            public Object apply(Object[] values) {
                 double currentMin = Double.POSITIVE_INFINITY;
                 for (Object value : values) {
                     currentMin = Math.min(currentMin, (double) value);
@@ -615,7 +615,7 @@ public class ExpressionBuilderTest {
         Function minFunction = new Function("power", 2) {
 
             @Override
-            public double apply(Object[] values) {
+            public Object apply(Object[] values) {
                 return Math.pow((double) values[0], (double) values[1]);
             }
         };
@@ -633,7 +633,7 @@ public class ExpressionBuilderTest {
         Function maxFunction = new Function("max", 3) {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 double max = (double) values[0];
                 for (int i = 1; i < numArguments; i++) {
                     if ((double) values[i] > max) {
@@ -844,7 +844,7 @@ public class ExpressionBuilderTest {
         Function func = new Function("1gd") {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return 0;
             }
         };
@@ -855,7 +855,7 @@ public class ExpressionBuilderTest {
         Function func = new Function("+1gd") {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return 0;
             }
         };
@@ -972,7 +972,7 @@ public class ExpressionBuilderTest {
         Function custom = new Function("bar") {
 
             @Override
-            public double apply(Object... values) {
+            public Object apply(Object... values) {
                 return (double) values[0] / 2;
             }
         };
@@ -1293,7 +1293,7 @@ public class ExpressionBuilderTest {
     @Test
     public void testVarMap() throws Exception {
         String expr = "12.23 * foo - bar";
-        Map<String, Double> variables = new HashMap<String, Double>();
+        Map<String, Object> variables = new HashMap<>();
         variables.put("foo", 2d);
         variables.put("bar", 3.3d);
         Expression e = new ExpressionBuilder(expr)
@@ -1316,7 +1316,7 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 double sum = 0;
                 for (Object arg : args) {
                     sum += (double) arg;
@@ -1600,7 +1600,7 @@ public class ExpressionBuilderTest {
     public void testDocumentationExample6() throws Exception {
         Function logb = new Function("logb", 2) {
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return Math.log((double) args[0]) / Math.log((double) args[1]);
             }
         };
@@ -1617,7 +1617,7 @@ public class ExpressionBuilderTest {
         Function avg = new Function("avg", 4) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 double sum = 0;
                 for (Object arg : args) {
                     sum += (double) arg;
@@ -2638,7 +2638,7 @@ public class ExpressionBuilderTest {
         Function log = new Function("λωγ", 1) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return log((double) args[0]);
             }
         };
@@ -2656,7 +2656,7 @@ public class ExpressionBuilderTest {
         Function log = new Function("λ_ωγ", 1) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return log((double) args[0]);
             }
         };
@@ -2749,7 +2749,7 @@ public class ExpressionBuilderTest {
     public void testSecondArgumentNegative() throws Exception {
         Function round = new Function("MULTIPLY", 2) {
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return Math.round((double) args[0] * (double) args[1]);
             }
         };
@@ -2838,7 +2838,7 @@ public class ExpressionBuilderTest {
                 .variables("tr")
                 .function(new Function("tr") {
                     @Override
-                    public double apply(Object... args) {
+                    public Object apply(Object... args) {
                         return 0;
                     }
                 })
@@ -2876,7 +2876,7 @@ public class ExpressionBuilderTest {
     public void testCustomPercent() {
         Function percentage = new Function("percentage", 2) {
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 double val = (double) args[0];
                 double percent = (double) args[1];
                 if (percent < 0) {
@@ -2956,7 +2956,7 @@ public class ExpressionBuilderTest {
 
     @Test
     public void testExpressionWithArraySum2() throws Exception {
-        double[] nums = new double[]{1d, 2d, 3d};
+        Double[] nums = new Double[]{1d, 2d, 3d};
         Expression e = new ExpressionBuilder("x=array_sum(a)")
                 .variables("a")
                 .build()
@@ -2982,5 +2982,15 @@ public class ExpressionBuilderTest {
         for(int i = 0; i < nums.length; i++) {
             assertEquals(nums[i], evaluateRet[i], 0d);
         }
+    }
+
+    @Test
+    public void testExpressionSplitByKeyAndArraySize() throws Exception {
+        Expression e = new ExpressionBuilder("x=array_size(split_by_key(str, regex))")
+                .variables("str", "regex")
+                .build()
+                .setVariable("str", "10 100 1000")
+                .setVariable("regex", " ");
+        assertEquals(3d, e.evaluate(), 0d);
     }
 }

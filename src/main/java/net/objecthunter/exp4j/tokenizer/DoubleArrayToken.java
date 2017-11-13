@@ -4,14 +4,14 @@ package net.objecthunter.exp4j.tokenizer;
  * Created by wangdongxu on 11/7/17.
  */
 public class DoubleArrayToken extends Token {
-    private double[] value;
+    private Double[] value;
 
-    public DoubleArrayToken(double[] value) {
+    public DoubleArrayToken(Double[] value) {
         super(TOKEN_DOUBLE_ARRAY);
         this.value = value;
     }
 
-    public double[] getValue() {
+    public Double[] getValue() {
         return value;
     }
 }

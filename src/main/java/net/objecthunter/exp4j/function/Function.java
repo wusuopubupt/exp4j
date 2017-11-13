@@ -77,7 +77,7 @@ public abstract class Function {
      * @param args the set of arguments used for calculating the function
      * @return the result of the function evaluation
      */
-    public abstract double apply(Object... args);
+    public abstract Object apply(Object... args);
 
 
     /**

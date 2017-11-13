@@ -144,8 +144,8 @@ public class Tokenizer {
     }
 
 
-    private double[] castStringArrayToDoubleArray(String[] stringArray) {
-        double[] doubleArray = new double[stringArray.length];
+    private Double[] castStringArrayToDoubleArray(String[] stringArray) {
+        Double[] doubleArray = new Double[stringArray.length];
         int i = 0;
         try {
             for (i = 0; i < stringArray.length; i++) {
@@ -177,7 +177,7 @@ public class Tokenizer {
         this.pos++;
 
         String[] stringArray = sb.toString().split(",");
-        double[] doubleArray = castStringArrayToDoubleArray(stringArray);
+        Double[] doubleArray = castStringArrayToDoubleArray(stringArray);
         lastToken = new DoubleArrayToken(doubleArray);
         return lastToken;
     }

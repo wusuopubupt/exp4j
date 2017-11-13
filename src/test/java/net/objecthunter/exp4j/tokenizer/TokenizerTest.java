@@ -376,7 +376,7 @@ public class TokenizerTest {
         final Function log2 = new Function("log2") {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 return Math.log((double)args[0]) / Math.log(2d);
             }
         };
@@ -405,7 +405,7 @@ public class TokenizerTest {
         Function avg = new Function("avg", 2) {
 
             @Override
-            public double apply(Object... args) {
+            public Object apply(Object... args) {
                 double sum = 0;
                 for (Object arg : args) {
                     sum += (double)arg;

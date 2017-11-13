@@ -194,7 +194,13 @@ public class Expression {
 
     public double evaluate() {
         // may be throwing exception
-        return (double) evaluateToObject();
+        Object val = evaluateToObject();
+        try{
+            double doubleVal = Double.parseDouble(val.toString());
+            return doubleVal;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public Object evaluateToObject() {

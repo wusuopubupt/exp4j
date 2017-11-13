@@ -33,7 +33,7 @@ public class ExpressionValidateTest {
 	Function beta = new Function("beta", 2) {
 
 		@Override
-		public double apply(Object... args) {
+		public Object apply(Object... args) {
 			return (double)args[1] - (double)args[0];
 		}
 	};
@@ -44,7 +44,7 @@ public class ExpressionValidateTest {
 	Function gamma = new Function("gamma", 3) {
 
 		@Override
-		public double apply(Object... args) {
+		public Object apply(Object... args) {
 			return (double)args[0] * (double)args[1] / (double)args[2];
 		}
 	};
@@ -55,7 +55,7 @@ public class ExpressionValidateTest {
 	Function eta = new Function("eta", 7) {
 
 		@Override
-		public double apply(Object... args) {
+		public Object apply(Object... args) {
 			double eta = 0;
 			for (Object a : args) {
 				eta += (double)a;
@@ -282,7 +282,7 @@ public class ExpressionValidateTest {
 	public void testNoArgFunctionValidation() throws Exception {
 		Function now = new Function("now", 0) {
 			@Override
-			public double apply(Object... args) {
+			public Object apply(Object... args) {
 				return (double) new Date().getTime();
 			}
 		};
