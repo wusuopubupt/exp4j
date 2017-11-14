@@ -236,13 +236,14 @@ public class Tokenizer {
         }
 
         // skip white space
-        while (!isEndOfExpression(pos + lastValidLen) && Character.isWhitespace(expression[pos + lastValidLen])) {
-            lastValidLen++;
+        while (!isEndOfExpression(pos + testPos) && Character.isWhitespace(expression[pos + testPos])) {
+            testPos++;
         }
         // is assignment
-        if(!isEndOfExpression(pos + lastValidLen) && '=' == expression[pos + lastValidLen]) {
+        if(!isEndOfExpression(pos + testPos) && '=' == expression[pos + testPos]) {
             lastValidToken = new VariableToken(name);
             variableNames.add(name);
+            lastValidLen = testPos;
         }
 
         if (lastValidToken == null) {

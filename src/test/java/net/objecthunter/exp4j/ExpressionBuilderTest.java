@@ -2042,13 +2042,43 @@ public class ExpressionBuilderTest {
 
     @Test
     public void testExpressionAssignment1() throws Exception {
-        Expression e = new ExpressionBuilder("x=1+2")
+
+        Expression e = new ExpressionBuilder("xxxxxxxxx=1+2")
                 .build();
         assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("xxxxxxxxx=   1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("xxxxxxxxx =1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+         e = new ExpressionBuilder("x=1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("x =1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("x   =1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("x = 1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
+        e = new ExpressionBuilder("x =   1+2")
+                .build();
+        assertEquals(3d, e.evaluate(), 0d);
+
     }
 
     @Test
-    public void testExpressionAssignment2() throws Exception {
+    public void testExpressionAssignment3() throws Exception {
         Expression e = new ExpressionBuilder("x=a+b/(c-d)")
                 .variables("a", "b", "c", "d")
                 .build()
