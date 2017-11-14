@@ -3007,6 +3007,18 @@ public class ExpressionBuilderTest {
         assertEquals(3d, e.evaluate(), 0d);
     }
 
+
+    @Test
+    public void testExpressionArraySizeIntger() throws Exception {
+        Map<String, Object> varsMap = new HashMap<>();
+        varsMap.put("intArr", new Integer[]{1, 2, 3});
+        Expression e = new ExpressionBuilder("x=array_size(intArr)")
+                .variables("intArr")
+                .build()
+                .setVariables(varsMap);
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
     @Test
     public void testExpressionWithArraySum1() throws Exception {
         Expression e = new ExpressionBuilder("x=array_sum([1,   2,3])")
