@@ -226,21 +226,22 @@ public class Functions {
         builtinFunctions[INDEX_LEN] = new Function("len", 1) {
             @Override
             public Object apply(Object... args) {
-                return String.valueOf(args[0]).length();
+                // return Double
+                return Double.valueOf(String.valueOf(args[0]).length());
             }
         };
         builtinFunctions[INDEX_ARRAY_SIZE] = new Function("array_size", 1) {
             @Override
             public Object apply(Object... args) {
                 Object[] doubleArray = (Object[]) args[0];
-                return (doubleArray.length);
+                return Double.valueOf(doubleArray.length);
             }
         };
         builtinFunctions[INDEX_ARRAY_SUM] = new Function("array_sum", 1) {
             @Override
             public Object apply(Object... args) {
                 Double[] doubleArray = (Double[]) args[0];
-                double sum = 0.0;
+                Double sum = 0.0;
                 for (Double d : doubleArray) {
                     sum += d;
                 }
