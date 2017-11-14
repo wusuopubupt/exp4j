@@ -2907,6 +2907,36 @@ public class ExpressionBuilderTest {
     }
 
     @Test
+    public void testExpressionFuncLen() throws Exception {
+        // 123 -> 123.0
+        Expression e = new ExpressionBuilder("x=len(123)")
+                .build();
+        assertEquals(5d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionFuncLenString() throws Exception {
+        Map<String, Object> varMap = new HashMap<>();
+        varMap.put("str", "123");
+        Expression e = new ExpressionBuilder("x=len(str)")
+                .variables("str")
+                .build()
+                .setVariables(varMap);
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testExpressionFuncLenInteger() throws Exception {
+        Map<String, Object> varMap = new HashMap<>();
+        varMap.put("str", 123);
+        Expression e = new ExpressionBuilder("x=len(str)")
+                .variables("str")
+                .build()
+                .setVariables(varMap);
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
+    @Test
     public void testExpressionStringLiteralEmpty() throws Exception {
         Expression e = new ExpressionBuilder("x=len(\"\")")
                 .build();
@@ -2993,4 +3023,18 @@ public class ExpressionBuilderTest {
                 .setVariable("regex", " ");
         assertEquals(3d, e.evaluate(), 0d);
     }
+
+    @Test
+    public void testVariablesMap() throws Exception {
+        Map<String, Object> variablesMap = new HashMap<>();
+        variablesMap.put("a", 2d);
+        variablesMap.put("c", false);
+        variablesMap.put("d", new Double[]{1d, 2d});
+        Expression e = new ExpressionBuilder("x=a+1")
+                .variables("a")
+                .build()
+                .setVariables(variablesMap);
+        assertEquals(3d, e.evaluate(), 0d);
+    }
+
 }

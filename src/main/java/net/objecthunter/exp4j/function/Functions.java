@@ -226,7 +226,7 @@ public class Functions {
         builtinFunctions[INDEX_LEN] = new Function("len", 1) {
             @Override
             public Object apply(Object... args) {
-                return ((String) args[0]).length();
+                return String.valueOf(args[0]).length();
             }
         };
         builtinFunctions[INDEX_ARRAY_SIZE] = new Function("array_size", 1) {
