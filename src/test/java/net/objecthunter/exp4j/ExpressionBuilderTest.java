@@ -3067,4 +3067,25 @@ public class ExpressionBuilderTest {
         assertEquals(3d, e.evaluate(), 0d);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testMaxIllegalArgument() throws Exception {
+        // Unable to parse char '，' (Code:65292) at [5]
+        Expression e = new ExpressionBuilder("max(a， b)")
+                .variables("a", "b")
+                .build()
+                .setVariable("a", 1.0)
+                .setVariable("b", 2.0);
+        assertEquals(2.0, e.evaluate(), 0d);
+    }
+
+    @Test
+    public void testMaxLegalArgument() throws Exception {
+        // Unable to parse char '，' (Code:65292) at [5]
+        Expression e = new ExpressionBuilder("max(a, b)")
+                .variables("a", "b")
+                .build()
+                .setVariable("a", 1.0)
+                .setVariable("b", 2.0);
+        assertEquals(2.0, e.evaluate(), 0d);
+    }
 }
